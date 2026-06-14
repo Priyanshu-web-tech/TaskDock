@@ -37,14 +37,14 @@ const getAuthDetails = async (condition) => {
     const result = await Session.findOne({
       where: condition,
       attributes: {
-        exclude: ["created_at", "updated_at"],
+        exclude: ["createdAt", "updatedAt"],
       },
       include: [
         {
           model: User,
           as: "user",
           attributes: {
-            exclude: ["created_at", "updated_at"],
+            exclude: ["createdAt", "updatedAt"],
           },
         },
       ],

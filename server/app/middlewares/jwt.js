@@ -118,7 +118,7 @@ const verifyAuthToken = (req, res, next) => {
         );
       } else {
         const userDetails = await authRepository.findUserForSessionData(decoded?.id);
-        if(userDetails?.deleted_at) {
+        if(userDetails?.deletedAt) {
           await sessionRepository.deleteSession(
             { userId: userDetails?.id },
             undefined,
