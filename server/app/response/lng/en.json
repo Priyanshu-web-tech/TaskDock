@@ -1,0 +1,6 @@
+{
+  "SUCCESS": "Success.",
+  "ALREADY_EXIST": "Email already exist.",
+  "INVALID_CREDS": "Invalid Email Address.",
+  "INVALID_PASSWORD": "Wrong Password entered."
+}
