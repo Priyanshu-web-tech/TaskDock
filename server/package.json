@@ -4,10 +4,28 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "migration:create": "npx sequelize-cli migration:generate --name",
+    "migration:run": "npx sequelize-cli db:migrate --env development",
+    "migration:run:prod": "npx sequelize-cli db:migrate --env production",
+    "migration:undo": "npx sequelize-cli db:migrate:undo --env development",
+    "migration:undo:prod": "npx sequelize-cli db:migrate:undo --env production",
+    "migration:undo:all": "npx sequelize-cli db:migrate:undo:all --env development",
+    "migration:undo:all:prod": "npx sequelize-cli db:migrate:undo:all --env production",
+    "seed:create": "npx sequelize-cli seed:generate --name",
+    "seed:run": "npx sequelize-cli db:seed:all --env development",
+    "seed:run:prod": "npx sequelize-cli db:seed:all --env production",
+    "seed:undo": "npx sequelize-cli db:seed:undo --env development",
+    "seed:undo:prod": "npx sequelize-cli db:seed:undo --env production",
+    "model:create": "npx sequelize-cli model:generate"
+  },
+  "config": {
+    "sequelize": {
+      "config": "app/config/config.js"
+    }
   },
   "keywords": [],
-  "author": "",
+  "author": "Priyanshu Sharma",
   "license": "ISC",
   "description": "",
   "devDependencies": {
@@ -26,6 +44,9 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.11.0",
     "otp-generator": "^4.0.1",
+    "pg": "^8.21.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0",

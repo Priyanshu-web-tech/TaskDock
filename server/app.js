@@ -3,6 +3,10 @@ const helmet = require("helmet");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
+const swaggerDocs = require("./swaggerconfig");
+const swaggerUi = require("swagger-ui-express");
+const path = require("path");
+
 const {
   methodNotAllowed,
   genericErrorHandler,
@@ -47,6 +51,31 @@ app.use(express.text({ type: "text/plain" }));
 app.use(morgan(morganFormat));
 
 app.get("/health", (req, res) => res.send("Health check OK"));
+
+// Swagger Docs
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocs, {
+    swaggerOptions: {
+      withCredentials: true,
+      requestInterceptor: (req) => {
+        const authToken = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("auth-token="))
+          ?.split("=")[1];
+
+        if (authToken) {
+          req.headers["Authorization"] = `Bearer ${authToken}`;
+        }
+
+        return req;
+      },
+    },
+  }),
+);
+
+app.use("/api", require("./app/routes/index"));
 
 // Error handling
 app.use(methodNotAllowed);
