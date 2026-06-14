@@ -1,0 +1,25 @@
+import { NextRequest, NextResponse } from "next/server"
+
+const AUTH_ROUTES = ["/login", "/register"]
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  const accessToken = request.cookies.get("accessToken")
+
+  const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
+
+  if (accessToken && isAuthRoute) {
+    return NextResponse.redirect(new URL("/home", request.url))
+  }
+
+  if (!accessToken && !isAuthRoute) {
+    return NextResponse.redirect(new URL("/login", request.url))
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: ["/home/:path*", "/login", "/register"],
+}
