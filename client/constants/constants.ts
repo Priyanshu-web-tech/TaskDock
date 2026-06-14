@@ -10,4 +10,5 @@ export const NAVIGATION_ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
   HOME: "/home",
+  FORGOT_PASSWORD: "/forgot-password",
 }

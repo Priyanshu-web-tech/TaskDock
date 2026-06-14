@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server"
 
 const AUTH_ROUTES = ["/login", "/register"]
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  const accessToken = request.cookies.get("accessToken")
+  const accessToken = request.cookies.get("SESSION-TOKEN")
 
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
 
