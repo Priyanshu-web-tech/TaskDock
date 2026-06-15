@@ -107,6 +107,50 @@ router.get(
 
 /**
  * @swagger
+ * /v1/tasks/stats:
+ *   get:
+ *     summary: Get task statistics
+ *     description: Returns count of tasks grouped by status for the authenticated user.
+ *     tags:
+ *       - Tasks
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Task statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 result:
+ *                   type: object
+ *                   properties:
+ *                     all:
+ *                       type: integer
+ *                       example: 12
+ *                     todo:
+ *                       type: integer
+ *                       example: 4
+ *                     in_progress:
+ *                       type: integer
+ *                       example: 3
+ *                     completed:
+ *                       type: integer
+ *                       example: 5
+ *       401:
+ *         description: Unauthorized
+ */
+router.get(
+  "/stats",
+  verifyAuthToken,
+  controller.getTasksStats
+);
+
+/**
+ * @swagger
  * /v1/tasks/{id}:
  *   get:
  *     summary: Get task by ID

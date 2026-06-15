@@ -204,10 +204,40 @@ const deleteTask = async (userId, id) => {
   }
 };
 
+const getTasksStats = async (userId) => {
+  try {
+    const all = await taskRepository.countTasks({ userId });
+    const todo = await taskRepository.countTasks({ userId, status: "todo" });
+    const in_progress = await taskRepository.countTasks({ userId, status: "in_progress" });
+    const completed = await taskRepository.countTasks({ userId, status: "completed" });
+
+    return {
+      error: false,
+      data: {
+        all,
+        todo,
+        in_progress,
+        completed,
+      },
+      msgCode: "SUCCESS",
+      status: httpStatus.OK,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: true,
+      data: err,
+      msgCode: "INTERNAL_SERVER_ERROR",
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+    };
+  }
+};
+
 module.exports = {
   createTask,
   getTasks,
   getTaskById,
   updateTask,
   deleteTask,
+  getTasksStats,
 };

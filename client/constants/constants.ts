@@ -26,3 +26,14 @@ export const OTP_LENGTH = 6
 export const OTP_COOLDOWN_SECS = 120
 
 export const PAGE_SIZE = 10
+
+export const STATUS_LABELS: Record<string, string> = {
+  todo: "Todo",
+  in_progress: "In Progress",
+  completed: "Completed",
+}
+export const PRIORITY_LABELS: Record<string, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+}

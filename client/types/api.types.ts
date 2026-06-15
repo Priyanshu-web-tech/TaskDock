@@ -92,3 +92,55 @@ export interface ChangePasswordRequest {
   newPassword: string
   confirmPassword: string
 }
+
+export const TaskStatus = {
+  Todo: "todo",
+  InProgress: "in_progress",
+  Completed: "completed",
+} as const
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+export const TaskPriority = {
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+} as const
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority]
+
+export interface Task {
+  id: number
+  userId: number
+  title: string
+  description?: string | null
+  status: TaskStatus
+  priority: TaskPriority
+  dueDate?: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CreateTaskRequest {
+  title: string
+  description?: string | null
+  status?: TaskStatus
+  priority?: TaskPriority
+  dueDate?: string | null
+}
+
+export interface UpdateTaskRequest {
+  title?: string
+  description?: string | null
+  status?: TaskStatus
+  priority?: TaskPriority
+  dueDate?: string | null
+}
+
+export interface GetTasksParams {
+  search?: string
+  status?: string
+  sortBy?: string
+  sortOrder?: string
+  page?: number
+  size?: number
+}
+

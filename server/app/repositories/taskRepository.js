@@ -40,6 +40,13 @@ const findAndCountAllTasks = async (condition, options, transaction) => {
   });
 };
 
+const countTasks = async (condition, transaction) => {
+  return await Task.count({
+    where: condition,
+    ...(transaction ? { transaction } : {}),
+  });
+};
+
 module.exports = {
   createTask,
   findTaskById,
@@ -47,4 +54,5 @@ module.exports = {
   updateTask,
   deleteTask,
   findAndCountAllTasks,
+  countTasks,
 };

@@ -1,4 +1,5 @@
 const httpStatus = require("http-status").status;
+const otpGenerator = require("otp-generator");
 
 const db = require("../models/index").sequelize;
 

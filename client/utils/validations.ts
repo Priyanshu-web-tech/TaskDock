@@ -1,4 +1,5 @@
 import * as Yup from "yup"
+import { TaskStatus, TaskPriority } from "@/types/api.types"
 
 export const emailValidation = Yup.string()
   .email("Invalid email address")
@@ -67,3 +68,27 @@ export const textFieldValidation = (
 }
 
 export const nullableStringValidation = Yup.string().nullable().optional()
+
+export const taskTitleValidation = Yup.string()
+  .trim()
+  .max(255, "Title must be at most 255 characters")
+  .required("Title is required")
+
+export const taskDescriptionValidation = Yup.string()
+  .trim()
+  .max(1000, "Description must be at most 1000 characters")
+  .nullable()
+  .optional()
+
+export const taskStatusValidation = Yup.string()
+  .oneOf(Object.values(TaskStatus), "Invalid status")
+  .required("Status is required")
+
+export const taskPriorityValidation = Yup.string()
+  .oneOf(Object.values(TaskPriority), "Invalid priority")
+  .required("Priority is required")
+
+export const taskDueDateValidation = Yup.date()
+  .nullable()
+  .required("Due date is required")
+

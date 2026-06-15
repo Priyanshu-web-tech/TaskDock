@@ -9,7 +9,7 @@ import { toast } from "sonner"
 
 import type { RootState } from "../store"
 import { clearUserData } from "../slices/user-data-slice"
-import { BASE_URL, API_ROUTES, NAVIGATION_ROUTES } from "@/constants/constants"
+import { BASE_URL, API_ROUTES } from "@/constants/constants"
 
 let isLoggingOut = false
 let isRefreshing = false
@@ -69,6 +69,6 @@ const dynamicBaseQuery: BaseQueryFn<
 
 export const apiSlice = createApi({
   baseQuery: dynamicBaseQuery,
-  tagTypes: ["Users"],
+  tagTypes: ["Users", "Tasks"],
   endpoints: () => ({}),
 })
