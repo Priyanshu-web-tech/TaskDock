@@ -212,7 +212,7 @@ router.post("/refresh", controller.refreshToken);
  *                 result:
  *                   type: object
  *                   properties:
- *                     _id:
+ *                     id:
  *                       type: string
  *                     email:
  *                       type: string

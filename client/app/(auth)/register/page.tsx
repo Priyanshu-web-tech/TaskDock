@@ -65,7 +65,7 @@ export default function Page() {
           const { user } = response.result
           dispatch(
             setUserData({
-              _id: user.id,
+              id: user.id,
               email: user.email,
               firstName: user.firstName,
               lastName: user.lastName,

@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { UserType } from "@/types/api.types"
 
 export interface IUserSessionData {
-  _id: string
+  id: string
   userType: UserType
   firstName: string
   lastName: string
@@ -14,7 +14,7 @@ export interface IUserSessionData {
 }
 
 const initialState: IUserSessionData = {
-  _id: "",
+  id: "",
   userType: UserType.User,
   firstName: "",
   lastName: "",

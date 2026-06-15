@@ -32,6 +32,16 @@ export interface AuthResponse {
   user: AuthUser
 }
 
+export interface UserProfile {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  userType: UserType
+  createdAt: string
+  updatedAt: string
+}
+
 export interface ApiResponse<T> {
   success: boolean
   status_code: number
@@ -45,4 +55,40 @@ export interface PaginatedResponse<T> {
   page: number
   pageSize: number
   totalPages: number
+}
+
+export interface ForgotPasswordRequest {
+  email: string
+}
+
+export interface VerifyOtpRequest {
+  otp: string
+}
+
+export interface ResetPasswordRequest {
+  password: string
+  confirmPassword: string
+}
+
+export interface UpdateProfileRequest {
+  firstName: string
+  lastName: string
+}
+
+export interface UpdateProfileResponse {
+  user: {
+    id: string
+    email: string
+    firstName: string
+    lastName: string
+    userType: UserType
+    createdAt: string
+    updatedAt: string
+  }
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
 }
