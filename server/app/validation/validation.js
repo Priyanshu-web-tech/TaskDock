@@ -86,13 +86,6 @@ const updateProfile = Joi.object({
   }),
 });
 
-const updateHospital = Joi.object({
-  name: Joi.string().trim().required().messages({
-    "any.required": "Hospital name is required.",
-  }),
-  address: Joi.string().trim().optional().allow(""),
-});
-
 const changePassword = Joi.object({
   currentPassword: Joi.string().required().messages({
     "any.required": "Current password is required.",
