@@ -5,7 +5,7 @@ const AUTH_ROUTES = ["/login", "/register"]
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  const accessToken = request.cookies.get("SESSION-TOKEN")
+  const accessToken = request.cookies.get("SESSION-TOKEN")?.value
 
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
 
