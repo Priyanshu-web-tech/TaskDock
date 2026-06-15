@@ -31,5 +31,9 @@
   "INVALID_CURRENT_PASSWORD": "Current password is incorrect.",
   "SAME_PASSWORD": "New password must be different from the current password.",
   "LOGOUT_SUCCESSFUL": "Logged out successfully.",
-  "ACCESS_DENIED": "You do not have permission to perform this action."
+  "ACCESS_DENIED": "You do not have permission to perform this action.",
+  "TASK_CREATED": "Task created successfully.",
+  "TASK_UPDATED": "Task updated successfully.",
+  "TASK_DELETED": "Task deleted successfully.",
+  "TASK_NOT_FOUND": "Task not found."
 }
