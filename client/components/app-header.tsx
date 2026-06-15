@@ -219,7 +219,7 @@ export default function AppHeader() {
                 }}
                 className="flex items-center gap-2 rounded-xl border border-transparent p-1.5 transition-colors hover:border-border/40 hover:bg-muted/60 focus:outline-none"
               >
-                <div className="dark:bg-zinc-850 flex size-7 items-center justify-center rounded-full bg-zinc-200 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                <div className="flex size-7 items-center justify-center rounded-full bg-zinc-200 text-xs font-semibold text-zinc-700 dark:bg-zinc-600 dark:text-zinc-100">
                   {initials}
                 </div>
                 <span className="hidden max-w-[100px] truncate text-xs font-medium text-foreground/80 md:inline">
