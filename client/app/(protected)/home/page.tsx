@@ -19,6 +19,7 @@ import {
   ArrowUpDown,
   Circle,
   X,
+  Eye,
 } from "lucide-react"
 
 import {
@@ -44,6 +45,7 @@ import {
 import { Spinner } from "@/components/ui/spinner"
 import { DatePicker } from "@/components/date-picker"
 import Pagination from "@/components/pagination"
+import TaskDetailModal from "@/components/task-detail-modal"
 import {
   taskTitleValidation,
   taskDescriptionValidation,
@@ -111,6 +113,7 @@ export default function Page() {
   const [deletingTaskId, setDeletingTaskId] = React.useState<number | null>(
     null
   )
+  const [detailTaskId, setDetailTaskId] = React.useState<number | null>(null)
 
   const handleToggleStatus = async (task: Task) => {
     try {
@@ -547,7 +550,8 @@ export default function Page() {
                   return (
                     <Card
                       key={task.id}
-                      className={`group/card relative flex flex-col justify-between border transition-all duration-300 ${
+                      onClick={() => setDetailTaskId(task.id)}
+                      className={`cursor-pointer relative flex flex-col justify-between border transition-all duration-300 ${
                         isComp
                           ? "border-border/40 bg-zinc-50/40 opacity-75 dark:bg-zinc-900/10"
                           : "border-border/60 bg-card hover:border-border hover:shadow-md"
@@ -557,7 +561,10 @@ export default function Page() {
                         <div className="flex min-w-0 flex-1 items-start gap-2.5">
                           {/* Interactive Checkbox */}
                           <button
-                            onClick={() => handleToggleStatus(task)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleToggleStatus(task)
+                            }}
                             className={`mt-0.5 shrink-0 transition-colors focus:outline-none ${
                               isComp
                                 ? "text-emerald-500"
@@ -591,16 +598,32 @@ export default function Page() {
                         </div>
 
                         {/* Action buttons */}
-                        <div className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover/card:opacity-100">
+                        <div className="flex shrink-0 items-center gap-1">
                           <button
-                            onClick={() => setEditingTask(task)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setDetailTaskId(task.id)
+                            }}
+                            className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                            title="View details"
+                          >
+                            <Eye className="h-3 w-3" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setEditingTask(task)
+                            }}
                             className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                             title="Edit task"
                           >
                             <Edit2 className="h-3 w-3" />
                           </button>
                           <button
-                            onClick={() => setDeletingTaskId(task.id)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setDeletingTaskId(task.id)
+                            }}
                             className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                             title="Delete task"
                           >
@@ -1082,6 +1105,13 @@ export default function Page() {
             </div>
           </div>
         </div>
+      )}
+
+      {detailTaskId !== null && (
+        <TaskDetailModal
+          taskId={detailTaskId}
+          onClose={() => setDetailTaskId(null)}
+        />
       )}
     </div>
   )
