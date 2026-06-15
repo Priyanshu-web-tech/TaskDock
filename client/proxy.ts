@@ -2,19 +2,20 @@ import { NextRequest, NextResponse } from "next/server"
 
 const AUTH_ROUTES = ["/login", "/register"]
 
+const PUBLIC_ROUTES = [...AUTH_ROUTES, "/api"]
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  console.log("[proxy] path:", pathname)
-  console.log("[proxy] all cookies:", request.cookies.getAll())
   const accessToken = request.cookies.get("SESSION-TOKEN")?.value
 
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
 
   if (accessToken && isAuthRoute) {
     return NextResponse.redirect(new URL("/home", request.url))
   }
 
-  if (!accessToken && !isAuthRoute) {
+  if (!accessToken && !isPublicRoute) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
