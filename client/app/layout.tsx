@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   description: "Task Management Portal",
 }
 
+export const dynamic = "force-dynamic"
+
 const geistHeading = Geist({
   subsets: ["latin"],
   variable: "--font-heading",
