@@ -3,64 +3,65 @@
 import * as Yup from "yup"
 import { useState } from "react"
 import { useFormik } from "formik"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Eye, EyeOff } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
 
-import { useLoginMutation } from "@/store/api/auth-api-slice"
-import { setUserData } from "@/store/slices/user-data-slice"
-import { useAppDispatch } from "@/store/hook"
+import { useResetPasswordMutation } from "@/store/api/auth-api-slice"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Spinner } from "@/components/ui/spinner"
 import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card"
 import { NAVIGATION_ROUTES } from "@/constants/constants"
-import { emailValidation, requiredFieldValidation } from "@/utils/validations"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import type { LoginFormValues } from "./login.types"
+import {
+  registerPasswordValidation,
+  confirmPasswordValidation,
+} from "@/utils/validations"
+import type { ResetPasswordFormValues } from "./reset-password.types"
 
-export default function Page() {
-  const dispatch = useAppDispatch()
+const ResetPassword = () => {
   const router = useRouter()
-  const [login, { isLoading }] = useLoginMutation()
-  const [showPassword, setShowPassword] = useState(false)
+  const [resetPassword, { isLoading }] = useResetPasswordMutation()
 
-  const formik = useFormik<LoginFormValues>({
-    initialValues: { email: "", password: "" },
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+
+  const formik = useFormik<ResetPasswordFormValues>({
+    initialValues: {
+      password: "",
+      confirmPassword: "",
+    },
     validationSchema: Yup.object({
-      email: emailValidation,
-      password: requiredFieldValidation("Password"),
+      password: registerPasswordValidation,
+      confirmPassword: confirmPasswordValidation("password"),
     }),
     onSubmit: async (values) => {
       try {
-        let deviceId = localStorage.getItem("deviceId")
-        if (!deviceId) {
-          deviceId = crypto.randomUUID()
-          localStorage.setItem("deviceId", deviceId)
-        }
-        const response = await login({ ...values, deviceId }).unwrap()
+        const response = await resetPassword(values).unwrap()
+
         if (response?.success) {
-          const { user } = response.result
-          dispatch(
-            setUserData({
-              id: user.id,
-              email: user.email,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              userType: user.userType,
-              createdAt: "",
-              updatedAt: "",
-            })
+          toast.success(
+            response.message ??
+              "Password reset successfully. Please sign in."
           )
-          router.push(NAVIGATION_ROUTES.HOME)
+
+          router.push(NAVIGATION_ROUTES.LOGIN)
         } else {
-          toast.error(response?.message ?? "Login failed.")
+          toast.error(response?.message ?? "Failed to reset password.")
         }
       } catch (err: unknown) {
         const message =
           (err as { data?: { message?: string } })?.data?.message ??
-          "Login failed. Please try again."
+          "Failed to reset password. Please try again."
+
         toast.error(message)
       }
     },
@@ -70,10 +71,11 @@ export default function Page() {
     <Card className="w-full max-w-[360px] border border-border/60 bg-card/40 dark:bg-card/20 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300">
       <CardHeader className="space-y-1.5 pb-5 pt-6 text-left">
         <CardTitle className="text-lg font-medium tracking-tight text-foreground">
-          Welcome back
+          Reset password
         </CardTitle>
+
         <CardDescription className="text-[12px] text-muted-foreground leading-normal">
-          Please enter your credentials to access your account.
+          Choose a strong new password for your account.
         </CardDescription>
       </CardHeader>
 
@@ -81,44 +83,12 @@ export default function Page() {
         <CardContent className="space-y-3.5 pb-5">
           <div className="space-y-1">
             <Label
-              htmlFor="email"
+              htmlFor="password"
               className="text-xs font-medium text-muted-foreground"
             >
-              Email Address
+              New Password
             </Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="you@example.com"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className="h-9 px-3 rounded-xl border-border/80 focus-visible:ring-primary/10"
-              aria-invalid={!!(formik.touched.email && formik.errors.email)}
-            />
-            {formik.touched.email && formik.errors.email && (
-              <p className="text-[11px] font-medium text-destructive mt-0.5">
-                {formik.errors.email}
-              </p>
-            )}
-          </div>
 
-          <div className="space-y-1">
-            <div className="flex justify-between items-center">
-              <Label
-                htmlFor="password"
-                className="text-xs font-medium text-muted-foreground"
-              >
-                Password
-              </Label>
-              <Link
-                href={NAVIGATION_ROUTES.FORGOT_PASSWORD}
-                className="text-xs text-muted-foreground hover:text-foreground hover:underline transition-colors"
-              >
-                Forgot?
-              </Link>
-            </div>
             <div className="relative">
               <Input
                 id="password"
@@ -133,6 +103,7 @@ export default function Page() {
                   !!(formik.touched.password && formik.errors.password)
                 }
               />
+
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
@@ -145,11 +116,59 @@ export default function Page() {
                 )}
               </button>
             </div>
+
             {formik.touched.password && formik.errors.password && (
               <p className="text-[11px] font-medium text-destructive mt-0.5">
                 {formik.errors.password}
               </p>
             )}
+          </div>
+
+          <div className="space-y-1">
+            <Label
+              htmlFor="confirmPassword"
+              className="text-xs font-medium text-muted-foreground"
+            >
+              Confirm Password
+            </Label>
+
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirm ? "text" : "password"}
+                placeholder="••••••••"
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="h-9 pl-3 pr-9 rounded-xl border-border/80 focus-visible:ring-primary/10"
+                aria-invalid={
+                  !!(
+                    formik.touched.confirmPassword &&
+                    formik.errors.confirmPassword
+                  )
+                }
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowConfirm((prev) => !prev)}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground/60 hover:text-foreground/80 transition-colors focus:outline-none"
+              >
+                {showConfirm ? (
+                  <EyeOff className="size-3.5" />
+                ) : (
+                  <Eye className="size-3.5" />
+                )}
+              </button>
+            </div>
+
+            {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword && (
+                <p className="text-[11px] font-medium text-destructive mt-0.5">
+                  {formik.errors.confirmPassword}
+                </p>
+              )}
           </div>
         </CardContent>
 
@@ -161,19 +180,12 @@ export default function Page() {
             disabled={isLoading}
           >
             {isLoading && <Spinner className="mr-1.5" />}
-            Sign in
+            Reset Password
           </Button>
-          <p className="text-center text-[11px] text-muted-foreground">
-            New to TaskDock?{" "}
-            <Link
-              href={NAVIGATION_ROUTES.REGISTER}
-              className="font-medium text-foreground hover:underline transition-colors"
-            >
-              Create an account
-            </Link>
-          </p>
         </CardFooter>
       </form>
     </Card>
   )
 }
+
+export default ResetPassword

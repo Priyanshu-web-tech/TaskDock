@@ -13,6 +13,7 @@ import { setUserData } from "@/store/slices/user-data-slice"
 import { useAppDispatch } from "@/store/hook"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
 import { NAVIGATION_ROUTES } from "@/constants/constants"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -102,12 +103,12 @@ export default function Page() {
         <CardContent className="space-y-3.5 pb-4">
           <div className="grid grid-cols-2 gap-3.5">
             <div className="space-y-1">
-              <label
+              <Label
                 htmlFor="firstName"
                 className="text-xs font-medium text-muted-foreground"
               >
                 First Name <span className="text-destructive">*</span>
-              </label>
+              </Label>
               <Input
                 id="firstName"
                 name="firstName"
@@ -132,12 +133,12 @@ export default function Page() {
             </div>
 
             <div className="space-y-1">
-              <label
+              <Label
                 htmlFor="lastName"
                 className="text-xs font-medium text-muted-foreground"
               >
                 Last Name
-              </label>
+              </Label>
               <Input
                 id="lastName"
                 name="lastName"
@@ -163,12 +164,12 @@ export default function Page() {
           </div>
 
           <div className="space-y-1">
-            <label
+            <Label
               htmlFor="email"
               className="text-xs font-medium text-muted-foreground"
             >
               Email Address <span className="text-destructive">*</span>
-            </label>
+            </Label>
             <Input
               id="email"
               name="email"
@@ -188,12 +189,12 @@ export default function Page() {
           </div>
 
           <div className="space-y-1">
-            <label
+            <Label
               htmlFor="password"
               className="text-xs font-medium text-muted-foreground"
             >
               Password <span className="text-destructive">*</span>
-            </label>
+            </Label>
             <div className="relative">
               <Input
                 id="password"
@@ -228,12 +229,12 @@ export default function Page() {
           </div>
 
           <div className="space-y-1">
-            <label
+            <Label
               htmlFor="confirmPassword"
               className="text-xs font-medium text-muted-foreground"
             >
               Confirm Password <span className="text-destructive">*</span>
-            </label>
+            </Label>
             <div className="relative">
               <Input
                 id="confirmPassword"
